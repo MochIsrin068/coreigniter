@@ -7,12 +7,73 @@ class M_user extends CI_Model{
         parent::__construct();
     }
 
-    private $table = 'users';
-    private $base = 'user';
+    private $table = 'table_users';
+    private $base = 'table_user';
     private $id = 'userid';
 
+    public function fetch($data){
+      $start = $data['start'];
+      $limit = $data['limit'];
+      $where = (isset($data['where'])) ? $data['where'] : null;
+      $select = (isset($data['select'])) ? $data['select'] : null;
+      $join = (isset($data['join'])) ? $data['join'] : null;
+      $like = (isset($data['like'])) ? $data['like'] : null;
+      $order = (isset($data['order'])) ? $data['order'] : null;
+
+      if($select==null || !is_array($select)){
+        $this->db->select('*');
+      }else{
+        foreach($select as $s){
+          $this->db->select($s);
+        }
+      }
+
+      $this->db->distinct();
+
+      $this->db->from($this->table);
+
+      if($join!=null && is_array($join)){
+        foreach($join as $j){
+          $this->db->join(
+            $j['table'],
+            $this->table.'.'.$this->id.'='.$j['table'].'.'.$j['id'],
+            $j['join']
+          );
+        }
+      }
+
+      if($where!=null && is_array($where)){
+        $this->db->where($where);
+      }
+
+      if($like!=null && is_array($like)){
+        $this->db->group_start();
+        $i=0;
+        foreach($like['name'] as $l){
+          if($i==0){
+            $this->db->like($l, $like['key']);
+          }else{
+            $this->db->or_like($l, $like['key']);
+          }
+          $i++;
+        }
+        $this->db->group_end();
+      }
+
+      if($order!=null && is_array($order)){
+        $this->db->order_by($order['field'],$order['type']);
+      }
+
+      if($limit!=null){
+        $this->db->limit($limit, $start);
+      }
+
+      $query = $this->db->get();
+      return $query->result();
+    }
+
     public function get(){
-      //$query = $this->db->get($this->table);
+      $query = $this->db->get($this->table);
       return $query->result();
     }
     public function getWhere($data){

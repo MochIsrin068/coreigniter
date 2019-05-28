@@ -20,18 +20,18 @@ class MY_Controller extends CI_Controller {
     			$this->load->view('templates/V_' . $template . '', $this->data);
     		}
 		 }
-		 
-		 public function setPagination($base_url, $total_records, $limit_per_page, $uri_segment = 3){
-				$config['base_url'] = $base_url;
-				$config['total_rows'] = $total_records;
-				$config['per_page'] = $limit_per_page;
-				$config["uri_segment"] = $uri_segment;
-		
+
+		 public function setPagination($pagination){
+				$config['base_url'] = $pagination['base_url'];
+				$config['total_rows'] = $pagination['total_records'];
+				$config['per_page'] = $pagination['limit_per_page'];
+				$config["uri_segment"] = $pagination['uri_segment'];
+
 				// custom paging configuration
-				$config['num_links'] = $total_records/$limit_per_page;
+				$config['num_links'] = $pagination['total_records']/$pagination['limit_per_page'];
 				$config['use_page_numbers'] = TRUE;
 				$config['reuse_query_string'] = TRUE;
-		
+
 				$config['full_tag_open'] = '<ul class="pagination">';
 				$config['full_tag_close'] = '</ul>';
 				$config['first_link'] = false;
@@ -50,13 +50,35 @@ class MY_Controller extends CI_Controller {
 				$config['cur_tag_close'] = '</a></li>';
 				$config['num_tag_open'] = '<li>';
 				$config['num_tag_close'] = '</li>';
-		
+
 				$this->pagination->initialize($config);
-		
+
 				// build paging links
 				return $this->pagination->create_links();
 		}
-		 
+
+    public function errorValidation($error){
+      $alert = str_replace('<p>','<li>',$error);
+      $alert = str_replace('</p>','</li>',$alert);
+      $alert = "<ul>".$alert."</ul>";
+      return $alert;
+    }
+
+    public function getMenu(){
+      $this->load->model(array('m_menu','m_submenu','m_group_access'));
+      $group = $this->session->userdata('group_id');
+      $menu = [];
+      $access = $this->m_group_access->getWhere(array('group_id'=>$group));
+
+      foreach ($access as $key => $value) {
+        array_push($menu, $this->m_menu->getWhere(array('id'=>$value->menu_id,'status'=>1))[0]);
+      }
+      foreach ($menu as $km => $vm) {
+        $vm->submenu = $this->m_submenu->getWhere(array('menu_id'=>$vm->id,'status'=>1));
+      }
+      return $menu;
+    }
+
 }
 
 class User_Controller extends MY_Controller{
@@ -82,7 +104,9 @@ class Admin_Controller extends User_Controller{
     	if(!$this->ion_auth->is_admin()){
     		$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->lang->line('login_must_admin') ) );
     		redirect(site_url('/auth/login'));
-    	}
+    	}else{
+        $this->data['menu'] = parent::getMenu();
+      }
     }
 
     protected function render($the_view = NULL, $template = 'admin_master'){

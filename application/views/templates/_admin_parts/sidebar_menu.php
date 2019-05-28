@@ -1,3 +1,4 @@
+
 <!-- #Top Bar -->
 <section>
         <!-- Left Sidebar -->
@@ -8,18 +9,13 @@
                     <img src="<?php echo base_url('assets/')?>img/user.png" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
-                    <div class="email">john.doe@example.com</div>
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo ucwords($this->session->userdata('user_profile_name')) ?></div>
+                    <div class="email"><?php echo $this->session->userdata('email') ?></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</a></li>
+                            <li><a href="<?php echo site_url('setting/userprofile') ?>"><i class="material-icons">person</i>Profile</a></li>
+                            <!--<li role="separator" class="divider"></li>-->
                         </ul>
                     </div>
                 </div>
@@ -29,31 +25,35 @@
             <div class="menu">
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li class="active">
-                        <a href="<?php echo site_url('admin')?>">
-                            <i class="material-icons">home</i>
-                            <span>Home</span>
-                        </a>
-                    </li>
+                    <?php foreach ($menu as $key => $value): ?>
+                      <?php if ($value->submenu==null): ?>
+                        <li class="">
+                            <a href="<?php echo site_url($value->link)?>">
+                                <i class="material-icons"><?php echo $value->icon ?></i>
+                                <span><?php echo $value->name ?></span>
+                            </a>
+                        </li>
+                      <?php else: ?>
+                        <li class="">
+                            <a href="javascript:void(0);" class="menu-toggle">
+                              <i class="material-icons"><?php echo $value->icon ?></i>
+                              <span><?php echo $value->name ?></span>
+                            </a>
+                            <ul class="ml-menu">
+                                <?php foreach ($value->submenu as $k => $v): ?>
+                                  <li>
+                                      <a href="<?php echo site_url($v->link)?>"><?php echo $v->name ?></a>
+                                  </li>
+                                <?php endforeach; ?>
 
-                    <li class="">
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">settings</i>
-                            <span>Setting</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="<?php echo site_url('setting/user')?>">User</a>
-                            </li>
-                            <li>
-                                <a href="<?php echo site_url('setting/group')?>">Grup User</a>
-                            </li>
-                            <li>
-                                <a href="<?php echo site_url('setting/menu')?>">Menu</a>
-                            </li>
+                            </ul>
+                        </li>
+                      <?php endif; ?>
 
-                        </ul>
-                    </li>
+                    <?php endforeach; ?>
+
+
+
 
                 </ul>
             </div>

@@ -5,11 +5,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Alert  {
 	const SUCCESS          = 1;
 	const DANGER           = 0;
-	const INFO           	= 2;
+	const WARNING           	= 2;
 
 	public function __construct(  )
 	{
-		
+
 			// Do something with $params
 	}
 
@@ -17,17 +17,17 @@ class Alert  {
 	{
 		$_mode = array(
 			array(
-				"label" => "Alert!",
+				"label" => "Alert! ",
 				"icon" => "icon fa fa-ban",
 				"style" => "alert alert-danger alert-dismissible",
 			),
 			array(
-				"label" => "Information!",
+				"label" => "Information! ",
 				"icon" => "icon fa fa-globe",
-				"style" => "alert alert-success alert-dismissible",
+				"style" => "alert alert-info alert-dismissible",
 			),
 			array(
-				"label" => "Warning!",
+				"label" => "Warning! ",
 				"icon" => "icon fa fa-ban",
 				"style" => "alert alert-warning alert-dismissible",
 			),
@@ -36,10 +36,10 @@ class Alert  {
 		return "
 				<div class='".$_mode[ $mode ][ "style" ]."'>
 				<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-				<h4><i class='".$_mode[ $mode ][ "icon" ]."'></i> ".$_mode[ $mode ][ "label" ]."!</h4>".
+				<h4><i class='".$_mode[ $mode ][ "icon" ]."'></i> ".$_mode[ $mode ][ "label" ]."</h4>".
 					$message
 				."</div>
 				";
-		
+
 	}
 }
