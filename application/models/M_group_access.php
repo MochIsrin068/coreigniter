@@ -56,12 +56,19 @@ class M_group_access extends CI_Model{
         $this->db->group_start();
         $i=0;
         foreach($like['name'] as $l){
+          $l = ($join!=null) ?  $this->table.'.'.$l: $l;
           if($i==0){
             $this->db->like($l, $like['key']);
           }else{
             $this->db->or_like($l, $like['key']);
           }
           $i++;
+        }
+        if($select_join!=null){
+          foreach($select_join as $j){
+            $join_name = explode( ' ',$j)[0]; 
+            $this->db->or_like($join_name, $like['key']);
+          }
         }
         $this->db->group_end();
       }

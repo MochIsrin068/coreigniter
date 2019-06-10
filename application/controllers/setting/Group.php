@@ -50,7 +50,9 @@ class Group extends Admin_Controller {
         $this->data["table_header"] = $this->services->tabel_header($tabel_cell);
         $this->data["number"] = $pagination['start_record'];
         $this->data["current_page"] = $this->current_page;
-        $this->data["headline"] = "TABLE GROUP";
+        $this->data["block_header"] = "Group Management";
+        $this->data["header"] = "TABLE GROUP";
+        $this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
         //$data['group'] = $this->m_group->group($this->session->groupdata('group_id'));
         //$data['subgroup'] = $this->m_group->subgroup($this->session->groupdata('group_id'));
 
@@ -83,7 +85,9 @@ class Group extends Admin_Controller {
       $this->data['form_action'] = site_url($this->current_page.'/create');
       $this->data['name'] = $this->name;
       $this->data['parent_page'] = $this->current_page;
-      $this->data["headline"] = "CREATE GROUP";
+      $this->data["block_header"] = "Group Management";
+      $this->data["header"] = "Tambah Group";
+      $this->data["sub_header"] = 'Tekan Tombol Simpan Ketika Selesai Mengisi Form';
       $this->render( "admin/group/create");
     }
 
@@ -110,7 +114,7 @@ class Group extends Admin_Controller {
             $input_data = $this->input->post();
             $update = $this->update($id, $input_data);
             if($update){
-              $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::WARNING, 'Update data berhasil'));
+              $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, 'Update data berhasil'));
               redirect($this->current_page);
             }else{
               $form = $this->services->form_data();
@@ -127,7 +131,9 @@ class Group extends Admin_Controller {
       $this->data['form_action'] = site_url($this->current_page.'/edit/'.$id);
       $this->data['name'] = $this->name;
       $this->data['parent_page'] = $this->current_page;
-      $this->data["headline"] = "EDIT GROUP";
+      $this->data["block_header"] = "Group Management";
+      $this->data["header"] = "Ubah Group";
+      $this->data["sub_header"] = 'Silahkan ubah data yang ingin anda ganti';
       $this->render( "admin/group/edit");
     }
 
@@ -148,10 +154,14 @@ class Group extends Admin_Controller {
       }else{
         $form_value = $form_value[0];
       }
-      $this->data["headline"] = "DETAIL GROUP";
+
       $this->data['form_data'] = $this->services->form_data($form_value);
       $this->data['parent_page'] = $this->current_page;
       $this->data['name'] = $this->name;
+      $this->data['detail'] = true;
+      $this->data["block_header"] = "Group Management";
+      $this->data["header"] = "Detail Group";
+      $this->data["sub_header"] = 'Halaman Ini Hanya Berisi Informasi Detail Dari Data';
       $this->render("admin/group/detail");
     }
 
@@ -162,9 +172,10 @@ class Group extends Admin_Controller {
       $w['id'] = $id;
       $delete = $this->m_group->delete($w);
       if($delete!=false){
-        $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, 'Delete data berhasil'));
+        $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, 'Delete data berhasil'));
         redirect($this->current_page);
       }else{
+        $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::WARNING, 'Terjadi Kesalahan'));
         redirect($this->current_page);
       }
 

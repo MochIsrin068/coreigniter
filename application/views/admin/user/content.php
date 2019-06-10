@@ -1,7 +1,7 @@
 <section class="content">
 	<div class="container-fluid">
 		<div class="block-header">
-			<h2>User Management</h2>
+			<h2><?php echo $block_header ?></h2>
 		</div>
         <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -10,8 +10,8 @@
                   <div class="row clearfix" style="margin-bottom:-30px">
                     <div class="col-md-6">
                       <h2>
-                          <?php echo strtoupper($headline)?>
-                          <small>Klik Tombol Action untuk aksi lebih lanjut</small>
+                          <?php echo strtoupper($header)?>
+                          <small><?php echo $sub_header ?></small>
                       </h2>
                     </div>
                     <!-- search form -->
@@ -56,15 +56,15 @@
                 </div>
 
             <div class="body table-responsive">
+								<?php echo $alert ?>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>FIRST NAME</th>
-                            <th>LAST NAME</th>
-                            <th>USERNAME</th>
-                            <th>EMAIL</th>
-                            <th>AKSI</th>
+														<?php foreach ($table_header as $kh => $vh): ?>
+															<th><?php echo $vh ?></th>
+														<?php endforeach; ?>
+                            <th>Pilihan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -77,20 +77,19 @@
                             ?>
                                 <tr>
                                   <th scope="row"><?php echo $no?></th>
-                                  <td><?php echo $value->first_name?></td>
-                                  <td><?php echo $value->last_name?></td>
-                                  <td><?php echo $value->username?></td>
-                                  <td><?php echo $value->email?></td>
+																	<?php foreach ($table_header as $kh => $vh): ?>
+																		<?php if($kh=='active')$value->{$kh} = ($value->{$kh}==1) ? 'Active': 'Non-Active'; ?>
+																		<td><?php echo $value->{$kh}?></td>
+																	<?php endforeach; ?>
                                     <td style="text-align:center">
                                     <div class="dropdown">
                                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                             <i class="material-icons">settings</i>
                                         </a>
                                         <ul class="dropdown-menu pull-right">
-
-                                            <li><a href="<?php echo site_url($current_page.'/detail?id='.$value->id)?>" class=" waves-effect waves-block">Detail</a></li>
-                                            <li><a href="<?php echo site_url($current_page.'/edit?id='.$value->id)?>" class=" waves-effect waves-block">Edit</a></li>
-                                            <li><a href="<?php echo site_url($current_page.'/delete?id='.$value->id)?>" class="waves-effect waves-block">Delete</a></li>
+																						<li><a href="<?php echo site_url($current_page.'/detail/'.$value->id)?>" class=" waves-effect waves-block">Detail</a></li>
+                                            <li><a href="<?php echo site_url($current_page.'/edit/'.$value->id)?>" class=" waves-effect waves-block">Edit</a></li>
+                                            <li><a href="<?php echo site_url($current_page.'/delete/'.$value->id)?>" class="waves-effect waves-block">Delete</a></li>
 
                                         </ul>
                                     </div>

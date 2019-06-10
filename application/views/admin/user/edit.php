@@ -2,7 +2,7 @@
 	<div class="container-fluid">
 		<div class="block-header">
 			<h2>
-				<?php echo $headline?>
+				<?php echo $block_header?>
 			</h2>
 		</div>
 		<div class="row clearfix">
@@ -10,42 +10,20 @@
 				<div class="card">
 					<div class="header">
 						<h2>
-							INPUT
-							<small>Different sizes and widths</small>
+							<?php echo strtoupper($header)?>
+							<small><?php echo $sub_header ?></small>
 						</h2>
 						<ul class="header-dropdown m-r--5">
-							<li class="dropdown">
-								<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-									<i class="material-icons">more_vert</i>
-								</a>
-								<ul class="dropdown-menu pull-right">
-									<li><a href="javascript:void(0);" class=" waves-effect waves-block">Action</a></li>
-									<li><a href="javascript:void(0);" class=" waves-effect waves-block">Another action</a></li>
-									<li><a href="javascript:void(0);" class=" waves-effect waves-block">Something else here</a></li>
-								</ul>
-							</li>
+							<a href="<?php echo site_url($parent_page)?>"><button type="button" class="btn btn-warning" name="button">Kembali</button></a>
 						</ul>
 					</div>
 					<div class="body">
-
-						<h2 class="card-inside-title">Basic Input</h2>
+						<h2 class="card-inside-title"></h2>
 						<div class="row clearfix">
-							<div class="col-sm-12">
-								<div class="form-group form-float">
-									<div class="form-line">
-										<input type="text" class="form-control">
-										<label class="form-label">Username</label>
-									</div>
-								</div>
+							<div class="col-lg-12">
+								<?php if(isset($alert)) echo $alert; ?>
 							</div>
-							<div class="col-sm-12">
-								<div class="form-group form-float">
-									<div class="form-line">
-										<input type="password" class="form-control">
-										<label class="form-label">Password</label>
-									</div>
-								</div>
-							</div>
+							<?php $this->load->view('templates/_admin_parts/form'); ?>
 						</div>
 					</div>
 				</div>

@@ -1,13 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class User_services{
-
-    protected $username;
-    protected $first_name;
-    protected $last_name;
-    protected $email;
-    protected $phone;
-
     function __construct(){
 
     }
@@ -18,53 +11,96 @@ class User_services{
   	}
 
     public $name = [
-        'username',
-        'first_name',
-        'last_name',
-        'email',
-        'phone',
+      'id',
+      'username',
+      'email',
+      'first_name',
+      'last_name',
+      'active',
+      'group_id'
     ];
 
     public $label =  [
-        'username' => 'Username',
-        'first_name' => 'First Name',
-        'last_name' => 'Last Name',
-        'email' => 'Email',
-        'phone' => 'Nomor Telepon',
+      'id' => 'User Id',
+      'username'  => 'Username',
+      'email' => 'Email User',
+      'first_name' => 'Nama Depan',
+      'last_name' => 'Nama Belakang',
+      'active' => 'Status',
+      'group_id' => 'Grup User',
+      'group_name' => 'Grup User',
+
     ];
 
     public $type =  [
-        'username' => 'text',
-        'first_name' => 'text',
-        'last_name' => 'text',
-        'email' => 'email',
-        'phone' => 'text',
+      'id' => 'number',
+      'username'  => 'text',
+      'email' => 'email',
+      'first_name' => 'text',
+      'last_name' => 'text',
+      'active' => 'select',
+      'group_id' => 'select',
     ];
 
-    public function validation_config(){
+    public function validation_config($type=null){
         $arr_con = [];
+        $email = ($type!='edit') ? 'trim|required|is_unique[table_users.email]' : 'trim|required';
+
         foreach ($this->name as $key => $value) {
-          $arr = array(
-            'field' => $value,
-  					'label' => $this->label[$value],
-  					'rules' =>  'trim|required',
-            'errors' => array(
-                        'required' => 'Field %s tidak boleh kosong  .',
-                )
-          );
-          array_push($arr_con, $arr);
+          if($value!='id'){
+            switch ($value) {
+              case 'email':
+                $arr = array(
+                  'field' => $value,
+                  'label' => $this->label[$value],
+                  'rules' =>  $email,
+                  'errors' => array(
+                              'required'      => 'Field %s tidak boleh kosong.',
+                              'is_unique'      => 'Email %s telah di gunakan.',
+                            )
+                );
+                break;
+
+              default:
+                $arr = array(
+                  'field' => $value,
+                  'label' => $this->label[$value],
+                  'rules' =>  'trim|required',
+                  'errors' => array(
+                              'required' => 'Field %s tidak boleh kosong  .',
+                      )
+                );
+                break;
+            }
+
+            array_push($arr_con, $arr);
+          }
         }
+
     		return $arr_con;
   	}
 
-    public function form_data($form_value=null){
+    public function form_data($form_value=null, $param=null){
+        $this->load->model('m_group');
+        $group = $this->m_group->get();
+
+        foreach ($group as $k => $v) {
+          $select['group_id'][$v->id] = $v->name;
+        }
+
+        $select['active'] = ['Non Active','Active'];
 
     		foreach ($this->name as $key => $value) {
           if($form_value!=null){
-            $val = $form_value->{$value};
+            if(isset($form_value->{$value})&&$form_value->{$value}!=null){
+              $val = $form_value->{$value};
+            }else{
+              $val = $this->form_validation->set_value($value);
+            }
           }else{
             $val = $this->form_validation->set_value($value);
           }
+
           switch ($this->type[$value]) {
             case 'select':
               $data[$value] = array(
@@ -73,7 +109,7 @@ class User_services{
                 'id' => $value,
                 'type' => $this->type[$value],
                 'placeholder' => $this->label[$value],
-                'option' => $select['status'],
+                'option' => $select[$value],
                 'class' => 'form-control show-tick',
                 'value' => $val,
               );
@@ -105,7 +141,6 @@ class User_services{
       if(isset($label['id'])) unset($label['id']);
       return $label;
     }
-
 
 }
 ?>

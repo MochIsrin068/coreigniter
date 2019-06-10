@@ -83,16 +83,19 @@ class GroupAccess_services{
 
     public function form_data($form_value=null, $param=null){
         $this->load->model('m_menu');
+
+        function add_select($a){
+          return array('No','Yes');
+        }
+
+        $arr  = ['c' => [],'r' => [],'u' => [],'d' => [],'s' => []];
+        $select = array_map('add_select', $arr);
+
         $menu = $this->m_menu->get();
 
         foreach ($menu as $k => $v) {
           $select['menu_id'][$v->id] = $v->name;
         }
-        $select['c'] = array('No','Yes');
-        $select['r'] = array('No','Yes');
-        $select['u'] = array('No','Yes');
-        $select['d'] = array('No','Yes');
-        $select['s'] = array('No','Yes');
 
     		foreach ($this->name as $key => $value) {
           if($form_value!=null){

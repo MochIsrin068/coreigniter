@@ -1,7 +1,7 @@
 <section class="content">
 	<div class="container-fluid">
 		<div class="block-header">
-			<h2>Group Management</h2>
+			<h2><?php echo $block_header ?></h2>
 		</div>
         <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -10,8 +10,8 @@
                   <div class="row clearfix" style="margin-bottom:-30px">
                     <div class="col-md-6">
                       <h2>
-                          <?php echo strtoupper($headline)?>
-                          <small>Klik Tombol Action untuk aksi lebih lanjut</small>
+                          <?php echo strtoupper($header)?>
+                          <small><?php echo $sub_header ?></small>
                       </h2>
                     </div>
                     <!-- search form -->

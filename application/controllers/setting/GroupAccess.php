@@ -7,14 +7,13 @@ class GroupAccess extends Admin_Controller {
     private $name = null;
     private $parent_page = 'setting/group';
     private $current_page = 'setting/groupaccess';
-    private $form_data = null;
+
 
     public function __construct(){
         parent::__construct();
         $this->load->library('services/GroupAccess_services');
         $this->services = new GroupAccess_services;
         $this->name = $this->services->name;
-        $this->form_data = $this->services->form_data();
         $this->load->model(array('m_group_access','m_group'));
     }
 
@@ -57,14 +56,14 @@ class GroupAccess extends Admin_Controller {
         $this->data["key"] = ($key!=null) ? $key : false;
         $this->data["alert"] = (isset($alert)) ? $alert : NULL ;
         $this->data["for_table"] = $for_table;
-      
+
         $this->data["table_header"] = $this->services->tabel_header($tabel_cell);
         $this->data["number"] = $pagination['start_record'];
         $this->data["id"] = $id;
         $this->data["current_page"] = $this->current_page;
-        $this->data["headline"] = "TABLE HAK AKSES GROUP ".$parent_data->name;
-        //$data['groupaccess'] = $this->m_group_access->groupaccess($this->session->groupaccessdata('groupaccess_id'));
-        //$data['subgroupaccess'] = $this->m_group_access->subgroupaccess($this->session->groupaccessdata('groupaccess_id'));
+        $this->data["block_header"] = "Group Management";
+        $this->data["header"] = "TABLE ACCESS GROUP ".$parent_data['name'];
+        $this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
         $this->render( "admin/group_access/content");
     }
@@ -173,16 +172,16 @@ class GroupAccess extends Admin_Controller {
     }
 
     public function delete($id) {
-      $parent_id = $this->input->get('id');
       if($id==null){
         redirect($this->current_page);
       }
       $w['id'] = $id;
-      $delete = $this->m_group_access->delete($w);
+      $delete = $this->m_group->delete($w);
       if($delete!=false){
-        $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, 'Delete data berhasil'));
-        redirect($this->current_page.'?id='.$parent_id);
+        $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, 'Delete data berhasil'));
+        redirect($this->current_page);
       }else{
+        $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::WARNING, 'Terjadi Kesalahan'));
         redirect($this->current_page);
       }
 
