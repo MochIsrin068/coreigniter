@@ -1,4 +1,4 @@
-<?php echo form_open($form_action);?>
+<?php echo (!isset($detail)) ? form_open($form_action) : null;?>
 <?php foreach ($form_data as $key => $value): ?>
   <?php if ($value['type']!='hidden'): ?>
     <div class="col-sm-12">
@@ -43,9 +43,10 @@
   <?php endif; ?>
 
 <?php endforeach; ?>
-
-  <div class="col-sm-12 ">
-      <button type="clear" class="btn float-left btn-warning waves-effect">Clear</button>
-      <button type="submit" class="btn float-left btn-primary waves-effect">Simpan</button>
-  </div>
-<?php echo form_close();?>
+  <?php if (!isset($detail)): ?>
+    <div class="col-sm-12 ">
+        <button type="clear" class="btn float-left btn-warning waves-effect">Clear</button>
+        <button type="submit" class="btn float-left btn-primary waves-effect">Simpan</button>
+    </div>
+    <?php echo form_close();?>
+  <?php endif; ?>

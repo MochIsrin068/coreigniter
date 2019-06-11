@@ -5,7 +5,7 @@ class Menu extends Admin_Controller {
 
     private $services = null;
     private $name = null;
-    private $parent_page = 'settings';
+    private $parent_page = 'setting';
     private $current_page = 'setting/menu';
     private $form_data = null;
 
@@ -50,9 +50,10 @@ class Menu extends Admin_Controller {
         $this->data["table_header"] = $this->services->tabel_header($tabel_cell);
         $this->data["number"] = $pagination['start_record'];
         $this->data["current_page"] = $this->current_page;
-        $this->data["headline"] = "TABLE MENU";
-        //$data['menu'] = $this->m_menu->menu($this->session->menudata('group_id'));
-        //$data['submenu'] = $this->m_menu->submenu($this->session->menudata('group_id'));
+        $this->data["parent_page"] = $this->parent_page;
+        $this->data["block_header"] = "Menu Management";
+        $this->data["header"] = "TABLE MENU";
+        $this->data["sub_header"]  = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
         $this->render( "admin/menu/content");
     }
@@ -83,7 +84,9 @@ class Menu extends Admin_Controller {
       $this->data['form_action'] = site_url($this->current_page.'/create');
       $this->data['name'] = $this->name;
       $this->data['parent_page'] = $this->current_page;
-      $this->data["headline"] = "CREATE MENU";
+      $this->data["block_header"] = "Menu Management";
+      $this->data["header"] = "CREATE MENU";
+      $this->data["sub_header"]  = 'Klik Tombol Save Setelah Mengisi Form';
       $this->render( "admin/menu/create");
     }
 
@@ -127,7 +130,10 @@ class Menu extends Admin_Controller {
       $this->data['form_action'] = site_url($this->current_page.'/edit/'.$id);
       $this->data['name'] = $this->name;
       $this->data['parent_page'] = $this->current_page;
-      $this->data["headline"] = "EDIT MENU";
+      $this->data["block_header"] = "Menu Management";
+      $this->data["header"] = "EDIT MENU";
+      $this->data["sub_header"]  = 'Klik Tombol Save Setelah Mengisi Form';
+
       $this->render( "admin/menu/edit");
     }
 
@@ -148,10 +154,13 @@ class Menu extends Admin_Controller {
       }else{
         $form_value = $form_value[0];
       }
-      $this->data["headline"] = "DETAIL MENU";
+      $this->data["block_header"] = "Menu Management";
+      $this->data["header"] = "DETAIL MENU";
+      $this->data["sub_header"]  = 'Klik Tombol Kembali Untuk Kembali Ke Halaman Sebelumnya';
       $this->data['form_data'] = $this->services->form_data($form_value);
       $this->data['parent_page'] = $this->current_page;
       $this->data['name'] = $this->name;
+      $this->data['detail'] = true;
       $this->render("admin/menu/detail");
     }
 

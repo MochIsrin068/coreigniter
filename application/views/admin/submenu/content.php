@@ -1,7 +1,7 @@
 <section class="content">
 	<div class="container-fluid">
 		<div class="block-header">
-			<h2>Menu Management</h2>
+			<h2><?php echo $block_header ?></h2>
 		</div>
         <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -10,8 +10,8 @@
                   <div class="row clearfix" style="margin-bottom:-30px">
                     <div class="col-md-6">
                       <h2>
-                          <?php echo strtoupper($headline)?>
-                          <small>Klik Tombol Action untuk aksi lebih lanjut</small>
+                          <?php echo strtoupper($header)?>
+                          <small><?php echo $sub_header ?></small>
                       </h2>
                     </div>
                     <!-- search form -->
@@ -64,7 +64,7 @@
 														<?php foreach ($table_header as $kh => $vh): ?>
 															<th><?php echo $vh ?></th>
 														<?php endforeach; ?>
-                            <th>AKSI</th>
+                            <th>Pilihan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,8 +78,7 @@
                                 <tr>
                                   <th scope="row"><?php echo $no?></th>
 																	<?php foreach ($table_header as $kh => $vh): ?>
-																		<?php if($kh=='status') $value->{$kh} = ($value->{$kh}==1) ? 'Active': 'Non-Active'; ?>
-
+																		<?php if($kh=='status')$value->{$kh} = ($value->{$kh}==1) ? 'Active': 'Non-Active'; ?>
 																		<td><?php echo $value->{$kh}?></td>
 																	<?php endforeach; ?>
                                     <td style="text-align:center">
@@ -88,11 +87,9 @@
                                             <i class="material-icons">settings</i>
                                         </a>
                                         <ul class="dropdown-menu pull-right">
-
-                                            <li><a href="<?php echo site_url($current_page.'/detail/'.$value->id.'?id='.$id)?>" class=" waves-effect waves-block">Detail</a></li>
-                                            <li><a href="<?php echo site_url($current_page.'/edit/'.$value->id.'?id='.$id)?>" class=" waves-effect waves-block">Edit</a></li>
-                                            <li><a href="<?php echo site_url($current_page.'/delete/'.$value->id.'?id='.$id)?>" class="waves-effect waves-block">Delete</a></li>
-
+																					<li><a href="<?php echo site_url($current_page.'/detail/'.$value->id.'?id='.$id)?>" class=" waves-effect waves-block">Detail</a></li>
+																					<li><a href="<?php echo site_url($current_page.'/edit/'.$value->id.'?id='.$id)?>" class=" waves-effect waves-block">Edit</a></li>
+																					<li><a href="<?php echo site_url($current_page.'/delete/'.$value->id.'?id='.$id)?>" class="waves-effect waves-block">Delete</a></li>
                                         </ul>
                                     </div>
                                   </td>

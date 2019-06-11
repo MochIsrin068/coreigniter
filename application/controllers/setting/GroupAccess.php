@@ -62,7 +62,7 @@ class GroupAccess extends Admin_Controller {
         $this->data["id"] = $id;
         $this->data["current_page"] = $this->current_page;
         $this->data["block_header"] = "Group Management";
-        $this->data["header"] = "TABLE ACCESS GROUP ".$parent_data['name'];
+        $this->data["header"] = "TABLE ACCESS GROUP ".$parent_data->name;
         $this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
         $this->render( "admin/group_access/content");
@@ -95,8 +95,10 @@ class GroupAccess extends Admin_Controller {
       $this->data['form_data'] = $form;
       $this->data['form_action'] = site_url($this->current_page.'/create/'.$id);
       $this->data['name'] = $this->name;
-      $this->data['parent_page'] = $this->current_page;
-      $this->data["headline"] = "CREATE GROUP";
+      $this->data['parent_page'] = $this->current_page.'?id='.$id;
+      $this->data["block_header"] = "Group Management";
+      $this->data["header"] = "SET ACCESS";
+      $this->data["sub_header"] = 'Klik Tombol Save Setelah Mengisi Form';
       $this->render( "admin/group_access/create");
     }
 
@@ -142,7 +144,9 @@ class GroupAccess extends Admin_Controller {
       $this->data['form_action'] = site_url($this->current_page.'/edit/'.$id);
       $this->data['name'] = $this->name;
       $this->data['parent_page'] = $this->current_page.'?id='.$parent_id;
-      $this->data["headline"] = "EDIT GROUP";
+      $this->data["block_header"] = "Group Management";
+      $this->data["header"] = "EDIT ACCESS";
+      $this->data["sub_header"] = 'Klik Tombol Save Setelah Mengisi Form';
       $this->render( "admin/group_access/edit");
     }
 
@@ -164,10 +168,13 @@ class GroupAccess extends Admin_Controller {
       }else{
         $form_value = $form_value[0];
       }
-      $this->data["headline"] = "DETAIL GROUP";
+      $this->data["block_header"] = "Group Management";
+      $this->data["header"] = "DETAIL ACCESS";
+      $this->data["sub_header"] = 'Klik Tombol Kembali Untuk Menuju Ke Halaman Sebelumnya';
       $this->data['form_data'] = $this->services->form_data($form_value);
-      $this->data['parent_page'] = $this->current_page;
+      $this->data['parent_page'] = $this->current_page.'?id='.$parent_id;
       $this->data['name'] = $this->name;
+      $this->data['detail'] = true;
       $this->render("admin/group_access/detail");
     }
 

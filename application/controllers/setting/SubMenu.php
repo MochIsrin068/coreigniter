@@ -59,9 +59,9 @@ class SubMenu extends Admin_Controller {
         $this->data["number"] = $pagination['start_record'];
         $this->data["id"] = $id;
         $this->data["current_page"] = $this->current_page;
-        $this->data["headline"] = "TABLE SUBMENU ".$parent_data->name;
-        //$data['submenu'] = $this->m_submenu->submenu($this->session->submenudata('submenu_id'));
-        //$data['subsubmenu'] = $this->m_submenu->subsubmenu($this->session->submenudata('submenu_id'));
+        $this->data["block_header"] = "Menu Management";
+        $this->data["header"] = "TABLE SUBMENU ".$parent_data->name;
+        $this->data["sub_header"]  = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
         $this->render( "admin/submenu/content");
     }
@@ -94,7 +94,9 @@ class SubMenu extends Admin_Controller {
       $this->data['form_action'] = site_url($this->current_page.'/create/'.$id);
       $this->data['name'] = $this->name;
       $this->data['parent_page'] = $this->current_page.'?id='.$id;
-      $this->data["headline"] = "CREATE GROUP";
+      $this->data["block_header"] = "Menu Management";
+      $this->data["header"] = "Tambah Submenu";
+      $this->data["sub_header"] = 'Tekan Tombol Simpan Ketika Selesai Mengisi Form';
       $this->render( "admin/submenu/create");
     }
 
@@ -122,7 +124,7 @@ class SubMenu extends Admin_Controller {
             $input_data = $this->input->post();
             $update = $this->update($id, $input_data);
             if($update){
-              $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::WARNING, 'Update data berhasil'));
+              $this->session->set_flashdata('alert', $this->alert->set_alert(Alert::SUCCESS, 'Update data berhasil'));
               redirect($this->current_page.'?id='.$parent_id);
             }else{
               $form = $this->services->form_data();
@@ -136,10 +138,12 @@ class SubMenu extends Admin_Controller {
         $form = $this->services->form_data($form_value);
       }
       $this->data['form_data'] = $form;
-      $this->data['form_action'] = site_url($this->current_page.'/edit/'.$id);
+      $this->data['form_action'] = site_url($this->current_page.'/edit/'.$id.'?id='.$parent_id);
       $this->data['name'] = $this->name;
       $this->data['parent_page'] = $this->current_page.'?id='.$parent_id;
-      $this->data["headline"] = "EDIT GROUP";
+      $this->data["block_header"] = "Menu Management";
+      $this->data["header"] = "Edit Submenu";
+      $this->data["sub_header"] = 'Tekan Tombol Simpan Ketika Selesai Mengisi Form';
       $this->render( "admin/submenu/edit");
     }
 
@@ -161,9 +165,12 @@ class SubMenu extends Admin_Controller {
       }else{
         $form_value = $form_value[0];
       }
-      $this->data["headline"] = "DETAIL GROUP";
+      $this->data["block_header"] = "Menu Management";
+      $this->data["header"] = "Detail Submenu";
+      $this->data["sub_header"] = 'Tekan Tombol Kembali Untuk Menuju Form Sebelumnya';
       $this->data['form_data'] = $this->services->form_data($form_value);
       $this->data['parent_page'] = $this->current_page.'?id='.$parent_id;
+      $this->data['detail'] = true;
       $this->data['name'] = $this->name;
       $this->render("admin/submenu/detail");
     }
